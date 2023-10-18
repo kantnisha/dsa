@@ -2,15 +2,71 @@
 {
   public static class BinaryTree
   {
+    public static int MaxDepthOfBinaryTree_BFS(TreeNode root)
+    {
+      if (root == null)
+      {
+        return 0;
+      }
+
+      var queue = new Queue<TreeNode>();
+      queue.Enqueue(root);
+      int level = 1;
+
+      while (queue.Count > 0)
+      {
+        var node = queue.Dequeue();
+
+        if(node.Left != null)
+        {
+          queue.Enqueue(node.Left);
+        }
+
+        if(node.Right != null)
+        {
+          queue.Enqueue(node.Right);
+        }
+
+        level++;
+      }
+
+      return level;
+    }
+
+    public static int MaxDepthOfBinaryTree_DFS(TreeNode root)
+    {
+      if (root == null)
+      {
+        return 0;
+      }
+
+      var stack = new Stack<(TreeNode, int)>();
+      stack.Push((root, 1));
+      int maxDepth = 1;
+
+      while (stack.Count > 0)
+      {
+        var (node, depth) = stack.Pop();
+
+        if (node != null)
+        {
+          maxDepth = Math.Max(maxDepth, depth);
+          stack.Push((node.Left, depth + 1));
+          stack.Push((node.Right, depth + 1));
+        }
+      }
+
+      return maxDepth;
+    }
     //Binary Tree Level Order Traversal
 
     public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
     {
-      if(p.Value > root.Value && q.Value > root.Value)
+      if (p.Value > root.Value && q.Value > root.Value)
       {
         return LowestCommonAncestor(root.Right, p, q);
       }
-      else if(p.Value < root.Value && q.Value < root.Value)
+      else if (p.Value < root.Value && q.Value < root.Value)
       {
         return LowestCommonAncestor(root.Left, p, q);
       }
@@ -24,29 +80,29 @@
     {
       var result = new List<IList<int>>();
 
-      if(root == null) return result;
+      if (root == null) return result;
 
       Queue<TreeNode> queue = new Queue<TreeNode>();
 
       queue.Enqueue(root);
 
-      while(queue.Count > 0)
+      while (queue.Count > 0)
       {
         var levelSize = queue.Count;
         var currentLevel = new List<int>();
 
-        for(int i= 0; i < levelSize; i++)
+        for (int i = 0; i < levelSize; i++)
         {
           var node = queue.Dequeue();
 
           currentLevel.Add(node.Value);
 
-          if(node.Left != null)
+          if (node.Left != null)
           {
             queue.Enqueue(node.Left);
           }
 
-          if(node.Right != null)
+          if (node.Right != null)
           {
             queue.Enqueue(node.Right);
           }
