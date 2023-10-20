@@ -2,6 +2,61 @@
 {
   public static class BinaryTree
   {
+    public static void RunAlgo()
+    {
+      var root = new BinaryTreeNode<int>(1);
+
+      var l1 = new BinaryTreeNode<int>(2);
+      var r1 = new BinaryTreeNode<int>(3);
+
+      var l2 = new BinaryTreeNode<int>(4);
+      var r2 = new BinaryTreeNode<int>(5);
+
+      var l3 = new BinaryTreeNode<int>(6);
+      var r3 = new BinaryTreeNode<int>(7);
+
+
+      root.Left = l1;
+      root.Right = r1;
+
+      l1.Left = l2;
+      l1.Right = r2;
+
+      r1.Left = l3;
+      r1.Right = r3;
+
+      //PreOrderTraversalRecurive<int>(root);
+      InOrderTraversalRecursive(root);
+
+      Console.ReadLine();
+    }
+
+    // Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree
+    // and inorder is the inorder traversal of the same tree, construct and return the binary tree.
+    // Ex: pre: [3,9,20,15,7]
+    // in: [9,3,15,20,7]
+
+    public static BinaryTreeNode<int> BuildTreeFromGivenInorderAndPreOrder(int[] preorder, int[] inorder)
+    {
+      if(preorder.Length != inorder.Length || preorder.Length == 0 || inorder.Length == 0)
+      {
+        return null;
+      }
+
+      var root = new BinaryTreeNode<int>(preorder[0]);
+
+      int i = 0;
+      while(inorder[i] != preorder[0])
+      {
+        i++;
+      }
+
+      root.Left = BuildTreeFromGivenInorderAndPreOrder(preorder[1..(i+1)], inorder[0..i]);
+      root.Right = BuildTreeFromGivenInorderAndPreOrder(preorder[(i+1)..inorder.Length], inorder[(i + 1)..inorder.Length]);
+
+      return root;
+    }
+
     public static int MaxDepthOfBinaryTree_BFS(TreeNode root)
     {
       if (root == null)
